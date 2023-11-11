@@ -60,6 +60,10 @@ struct Home: View {
                     .tabItem {
                         Label("Menu", systemImage: "list.dash")
                     }
+                UserProfile()
+                    .tabItem {
+                        Label("Profile", systemImage: "square.and.pencil")
+                    }
             }
             .navigationBarBackButtonHidden(true)
         }
@@ -72,6 +76,7 @@ struct MenuView: View {
         Text("Menu")
     }
 }
+
 
 #Preview {
     Home()
