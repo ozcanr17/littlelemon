@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-let uniqueFirstName = "Rıdvan"
-let uniqueLastName = "Özcan"
-let uniqueEmail = "ridvan@ozcan.com"
+let firstNameKey = "Rıdvan"
+let lastNameKey = "Özcan"
+let emailKey = "ridvan@ozcan.com"
+let uIsLoggedIn = "uIsLoggedIn"
 
 struct Onboarding: View {
     
@@ -51,9 +52,10 @@ struct Onboarding: View {
                 Button("Register") {
                     if !firstName.isEmpty && !lastName.isEmpty && !email.isEmpty {
                         isLoggedIn = true
-                        UserDefaults.standard.set(firstName, forKey: uniqueFirstName)
-                        UserDefaults.standard.set(lastName, forKey: uniqueLastName)
-                        UserDefaults.standard.set(email, forKey: uniqueEmail)
+                        UserDefaults.standard.set(true, forKey: uIsLoggedIn)
+                        UserDefaults.standard.set(firstName, forKey: firstNameKey)
+                        UserDefaults.standard.set(lastName, forKey: lastNameKey)
+                        UserDefaults.standard.set(email, forKey: emailKey)
                     } else {
                         if email.isEmpty || !isValidEmail(email) {
                             showAlert = true
@@ -72,6 +74,10 @@ struct Onboarding: View {
                     )
                 }
             }
+            .onAppear() {
+                if UserDefaults.standard.bool(forKey: uIsLoggedIn) {
+                    isLoggedIn = true
+                }            }
             .padding(.horizontal)
             .background(ignoresSafeAreaEdges: .all)
         }

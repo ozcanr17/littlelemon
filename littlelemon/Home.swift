@@ -20,6 +20,22 @@ struct MenuItem: Codable {
 
 struct Home: View {
     var body: some View {
+        TabView {
+            MenuView()
+                .tabItem {
+                    Label("Menu", systemImage: "list.dash")
+                }
+            UserProfile()
+                .tabItem {
+                    Label("Profile", systemImage: "square.and.pencil")
+                }
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+}
+
+struct MenuView: View {
+    var body: some View {
         VStack {
             HStack {
                 Spacer()
@@ -45,7 +61,7 @@ struct Home: View {
             HStack{
                 VStack(alignment: .leading) {
                     Text("We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
-                        .frame(width: 200)
+                        .frame(width: .infinity)
                 }
                 Image("Hero image")
                     .resizable()
@@ -54,26 +70,9 @@ struct Home: View {
                     .cornerRadius(20)
                 Spacer()
             }
-            
-            TabView {
-                MenuView()
-                    .tabItem {
-                        Label("Menu", systemImage: "list.dash")
-                    }
-                UserProfile()
-                    .tabItem {
-                        Label("Profile", systemImage: "square.and.pencil")
-                    }
-            }
-            .navigationBarBackButtonHidden(true)
+            Spacer()
         }
-        .padding(.horizontal, 10)
-    }
-}
-
-struct MenuView: View {
-    var body: some View {
-        Text("Menu")
+        .padding(.all)
     }
 }
 
