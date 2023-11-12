@@ -10,6 +10,7 @@ import SwiftUI
 struct Menu: View {
     
     @Environment(\.managedObjectContext) private var viewContext
+    @State private var selectedCategory: Category = .all
     
     func getMenuData() {
         PersistenceController.shared.clear()
@@ -20,6 +21,7 @@ struct Menu: View {
                 do {
                     let decoder = JSONDecoder()
                     let fullMenu = try decoder.decode(MenuList.self, from: data)
+                    
                     for item in fullMenu.menu {
                         let dish = Dish(context: viewContext)
                         dish.title = item.title
@@ -37,14 +39,30 @@ struct Menu: View {
             }
         }
         task.resume()
-        
     }
     
     @FetchRequest(
         entity: Dish.entity(),
         sortDescriptors:
             [NSSortDescriptor(keyPath: \Dish.title, ascending: true)])
+    
     var dishes: FetchedResults<Dish>
+
+    enum Category: String {
+        case all = "all"
+        case starters = "starters"
+        case mains = "mains"
+        case desserts = "desserts"
+        case drinks = "drinks"
+    }
+    
+    var filteredDishes: [Dish] {
+            if selectedCategory == .all {
+                return Array(dishes)
+            } else {
+                return dishes.filter { $0.category == selectedCategory.rawValue }
+            }
+        }
     
     var body: some View {
         VStack {
@@ -80,10 +98,42 @@ struct Menu: View {
                     .cornerRadius(20)
                 Spacer()
             }
+            Spacer(minLength: 30)
+            HStack {
+                Text("ORDER FOR DELIVERY!")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                Spacer()
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    let categories: [Category] = [.all, .starters, .mains, .desserts, .drinks]
+                    ForEach(categories, id: \.self) { category in
+                        Button(category.rawValue) {
+                            selectedCategory = category
+                        }
+                        .foregroundColor(.teal)
+                        .fontWeight(.bold)
+                        .padding()
+                        .frame( height: 30)
+                        .background(Color.green.opacity(0.05))
+                        .cornerRadius(10)
+                    }
+                }
+            }
             List {
-                ForEach(dishes) { dish in
-                    VStack {
-                        Text("Title: \(dish.title ?? "No title")")
+                ForEach(filteredDishes) { dish in
+                    HStack() {
+                        VStack(alignment: .leading) {
+                            Text(dish.title ?? "N/A")
+                                .font(.title3)
+                                .fontWeight(.bold)
+                            Text(dish.desc ?? "N/A")
+                                .font(.caption)
+                        }
+                        Spacer()
+                        AsyncImage(url: URL(string: dish.image!))
+                            .frame(width: 80, height: 80)
                     }
                 }
             }
@@ -93,6 +143,6 @@ struct Menu: View {
     }
 }
 
-//#Preview {
-//    Menu()
-//}
+#Preview {
+    Menu()
+}
