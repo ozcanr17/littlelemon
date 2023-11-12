@@ -9,20 +9,42 @@ import SwiftUI
 
 struct Menu: View {
     
+    @Environment(\.managedObjectContext) private var viewContext
+    
     func getMenuData() {
+        PersistenceController.shared.clear()
         let menuURL: URL = URL(string: "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")!
         let reqURL = URLRequest(url: menuURL)
         let task = URLSession.shared.dataTask(with: reqURL) { (data, response, error) in
-            if let error = error {
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    let fullMenu = try decoder.decode(MenuList.self, from: data)
+                    for item in fullMenu.menu {
+                        let dish = Dish(context: viewContext)
+                        dish.title = item.title
+                        dish.image = item.image
+                        dish.price = item.price
+                        dish.desc = item.description
+                        dish.category = item.category
+                        try? viewContext.save()
+                    }
+                } catch {
+                    print("Error decoding: \(error.localizedDescription)")
+                }
+            } else if let error = error {
                 print("Error: \(error.localizedDescription)")
-            } else if let data = data {
-                print("Received data: \(data)")
             }
-            
         }
         task.resume()
         
     }
+    
+    @FetchRequest(
+        entity: Dish.entity(),
+        sortDescriptors:
+            [NSSortDescriptor(keyPath: \Dish.title, ascending: true)])
+    var dishes: FetchedResults<Dish>
     
     var body: some View {
         VStack {
@@ -50,7 +72,6 @@ struct Menu: View {
             HStack{
                 VStack(alignment: .leading) {
                     Text("We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
-                        .frame(width: .infinity)
                 }
                 Image("Hero image")
                     .resizable()
@@ -59,13 +80,19 @@ struct Menu: View {
                     .cornerRadius(20)
                 Spacer()
             }
-            Spacer()
+            List {
+                ForEach(dishes) { dish in
+                    VStack {
+                        Text("Title: \(dish.title ?? "No title")")
+                    }
+                }
+            }
         }
         .onAppear {getMenuData()}
         .padding(.all)
     }
 }
 
-#Preview {
-    Menu()
-}
+//#Preview {
+//    Menu()
+//}
