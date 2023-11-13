@@ -25,6 +25,7 @@ struct UserProfile: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 100)
+                        .padding(.horizontal)
                         .offset(x: -50)
                 }
                 Spacer()
