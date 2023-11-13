@@ -91,7 +91,6 @@ struct Menu: View {
             HStack{
                 VStack(alignment: .leading) {
                     Text("We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
-                        .frame(width: .infinity)
                 }
                 Image("Hero image")
                     .resizable()
@@ -136,8 +135,29 @@ struct Menu: View {
                                 .fontWeight(.bold)
                         }
                         Spacer()
-                        AsyncImage(url: URL(string: dish.image!))
-                            .frame(width: 80, height: 80)
+                        AsyncImage(url: URL(string: dish.image!)) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .interpolation(.low)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 80, height: 80)
+                                    .cornerRadius(5)
+                            case .failure(_):
+                                Text("Failed!")
+                                    .frame(width: 80, height: 80)
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(5)
+                            case .empty:
+                                Text("Loading..")
+                                    .frame(width: 80, height: 80)
+                                    .background(Color.gray.opacity(0.2))
+                                    .cornerRadius(5)
+                            @unknown default:
+                                fatalError()
+                            }
+                        }
                     }
                 }
             }
