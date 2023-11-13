@@ -11,7 +11,7 @@ struct FetchedObjects<T, Content>: View where T : NSManagedObject, Content : Vie
     
   init(
     predicate: NSPredicate = NSPredicate(value: true),
-    sortDescriptors: [NSSortDescriptor] = [],
+    sortDescriptors: [NSSortDescriptor],
     @ViewBuilder content: @escaping ([T]) -> Content
   ) {
     self.content = content

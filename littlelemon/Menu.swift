@@ -12,6 +12,7 @@ struct Menu: View {
     @Environment(\.managedObjectContext) private var viewContext
     @State private var selectedCategory: Category = .all
     @State private var firstAppear: Bool = true
+    @State private var searchText: String = ""
 
     func getMenuData() {
         PersistenceController.shared.clear()
@@ -42,10 +43,29 @@ struct Menu: View {
         task.resume()
     }
     
+    func buildPredicate() -> NSPredicate {
+        var predicates = [NSPredicate]()
+
+        if !searchText.isEmpty {
+            predicates.append(NSPredicate(format: "title CONTAINS[cd] %@", searchText))
+        }
+
+        if selectedCategory != .all {
+            predicates.append(NSPredicate(format: "category == %@", selectedCategory.rawValue))
+        }
+
+        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+    }
+    
+    func buildSortDescriptor() -> [NSSortDescriptor] {
+        return [NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedStandardCompare))]
+    }
+
     @FetchRequest(
         entity: Dish.entity(),
-        sortDescriptors:
-            [NSSortDescriptor(keyPath: \Dish.title, ascending: true)])
+        sortDescriptors: [NSSortDescriptor(key: "title", ascending: true, selector: #selector(NSString.localizedStandardCompare))]
+    )
+    
     
     var dishes: FetchedResults<Dish>
 
@@ -66,109 +86,115 @@ struct Menu: View {
         }
     
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                Spacer()
-                Image("Logo")
-                Spacer()
-                Image("Profile")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40)
-            }
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Little Lemon")
-                        .font(.largeTitle)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    Text("Chicago")
+            VStack {
+                HStack {
+                    Spacer()
+                    Spacer()
+                    Image("Logo")
+                    Spacer()
+                    Image("Profile")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40)
+                }
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Little Lemon")
+                            .font(.largeTitle)
+                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                        Text("Chicago")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                    }
+                    Spacer()
+                }
+                HStack(alignment: .center){
+                    VStack(alignment: .leading) {
+                        Text("We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
+                            .frame(width: 200, height: 150)
+                    }
+                    Image("Hero image")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 160, height: 160)
+                        .cornerRadius(20)
+                        .offset(y: -20)
+                }
+                TextField("Search...", text: $searchText)
+                    .padding(.horizontal)
+                    .frame(width: 400, height: 40)
+                    .textFieldStyle(.roundedBorder)
+                HStack {
+                    Text("ORDER FOR DELIVERY!")
                         .font(.title3)
                         .fontWeight(.bold)
+                    Spacer()
                 }
-                Spacer()
-            }
-            HStack{
-                VStack(alignment: .leading) {
-                    Text("We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
-                }
-                Image("Hero image")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 160, height: 160)
-                    .cornerRadius(20)
-            }
-            Spacer(minLength: 30)
-            HStack {
-                Text("ORDER FOR DELIVERY!")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                Spacer()
-            }
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack {
-                    let categories: [Category] = [.all, .starters, .mains, .desserts, .drinks]
-                    ForEach(categories, id: \.self) { category in
-                        Button(category.rawValue) {
-                            selectedCategory = category
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack {
+                        let categories: [Category] = [.all, .starters, .mains, .desserts, .drinks]
+                        ForEach(categories, id: \.self) { category in
+                            Button(category.rawValue) {
+                                selectedCategory = category
+                            }
+                            .foregroundColor(.teal)
+                            .fontWeight(.bold)
+                            .padding()
+                            .frame( height: 30)
+                            .background(Color.green.opacity(0.05))
+                            .cornerRadius(10)
                         }
-                        .foregroundColor(.teal)
-                        .fontWeight(.bold)
-                        .padding()
-                        .frame( height: 30)
-                        .background(Color.green.opacity(0.05))
-                        .cornerRadius(10)
                     }
                 }
-            }
-            List {
-                ForEach(filteredDishes) { dish in
-                    HStack() {
-                        VStack(alignment: .leading) {
-                            Text(dish.title ?? "N/A")
-                                .font(.title3)
-                                .fontWeight(.bold)
-                            Text(dish.desc ?? "N/A")
-                                .font(.caption)
-                            Text("$\(dish.price ?? "N/A")")
-                                .font(.subheadline)
-                                .fontWeight(.bold)
-                        }
-                        Spacer()
-                        AsyncImage(url: URL(string: dish.image!)) { phase in
-                            switch phase {
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .interpolation(.low)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 80, height: 80)
-                                    .cornerRadius(5)
-                            case .failure(_):
-                                Text("Failed!")
-                                    .frame(width: 80, height: 80)
-                                    .background(Color.gray.opacity(0.2))
-                                    .cornerRadius(5)
-                            case .empty:
-                                Text("Loading..")
-                                    .frame(width: 80, height: 80)
-                                    .background(Color.gray.opacity(0.2))
-                                    .cornerRadius(5)
-                            @unknown default:
-                                fatalError()
+                FetchedObjects(predicate: buildPredicate(), sortDescriptors: buildSortDescriptor()) {(filteredDishes: [Dish]) in
+                    List(filteredDishes) { dish in
+                        HStack() {
+                            VStack(alignment: .leading) {
+                                Text(dish.title ?? "N/A")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                Text(dish.desc ?? "N/A")
+                                    .font(.caption)
+                                Text("$\(dish.price ?? "N/A")")
+                                    .font(.subheadline)
+                                    .fontWeight(.bold)
+                            }
+                            Spacer()
+                            AsyncImage(url: URL(string: dish.image!)) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .interpolation(.low)
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 80, height: 80)
+                                        .cornerRadius(5)
+                                case .failure(_):
+                                    Text("Failed!")
+                                        .frame(width: 80, height: 80)
+                                        .background(Color.gray.opacity(0.2))
+                                        .cornerRadius(5)
+                                case .empty:
+                                    Text("Loading..")
+                                        .frame(width: 80, height: 80)
+                                        .background(Color.gray.opacity(0.2))
+                                        .cornerRadius(5)
+                                @unknown default:
+                                    fatalError()
+                                }
                             }
                         }
                     }
+                    .listStyle(.plain)
                 }
             }
-        }
-        .onAppear {
-            if firstAppear {
-                getMenuData()
-                firstAppear = false
+            .onAppear {
+                if firstAppear {
+                    getMenuData()
+                    firstAppear = false
             }
         }
-        .padding(.all)
+            .padding(.all)
     }
 }
 
