@@ -11,7 +11,8 @@ struct Menu: View {
     
     @Environment(\.managedObjectContext) private var viewContext
     @State private var selectedCategory: Category = .all
-    
+    @State private var firstAppear: Bool = true
+
     func getMenuData() {
         PersistenceController.shared.clear()
         let menuURL: URL = URL(string: "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")!
@@ -90,13 +91,13 @@ struct Menu: View {
             HStack{
                 VStack(alignment: .leading) {
                     Text("We are family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.")
+                        .frame(width: .infinity)
                 }
                 Image("Hero image")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 160, height: 160)
                     .cornerRadius(20)
-                Spacer()
             }
             Spacer(minLength: 30)
             HStack {
@@ -130,6 +131,9 @@ struct Menu: View {
                                 .fontWeight(.bold)
                             Text(dish.desc ?? "N/A")
                                 .font(.caption)
+                            Text("$\(dish.price ?? "N/A")")
+                                .font(.subheadline)
+                                .fontWeight(.bold)
                         }
                         Spacer()
                         AsyncImage(url: URL(string: dish.image!))
@@ -138,7 +142,12 @@ struct Menu: View {
                 }
             }
         }
-        .onAppear {getMenuData()}
+        .onAppear {
+            if firstAppear {
+                getMenuData()
+                firstAppear = false
+            }
+        }
         .padding(.all)
     }
 }
