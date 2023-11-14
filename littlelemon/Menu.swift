@@ -92,11 +92,13 @@ struct Menu: View {
                     Spacer()
                     Image("Logo")
                     Spacer()
+                    
                     Image("Profile")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 40)
-                }
+                    }
+                Spacer()
                 HStack {
                     VStack(alignment: .leading) {
                         Text("Little Lemon")
@@ -192,11 +194,11 @@ struct Menu: View {
                 if firstAppear {
                     getMenuData()
                     firstAppear = false
+                }
             }
-        }
             .padding(.all)
+        }
     }
-}
 
 #Preview {
     Menu()
