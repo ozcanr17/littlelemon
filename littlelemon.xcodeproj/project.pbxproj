@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1933A4952B0531FC00B4BEB5 /* Welcoming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1933A4942B0531FC00B4BEB5 /* Welcoming.swift */; };
 		19352DB82B010044006548F6 /* FetchedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19352DB72B010044006548F6 /* FetchedObjects.swift */; };
 		19352DBA2B0100A5006548F6 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19352DB92B0100A5006548F6 /* Persistence.swift */; };
 		19352DBC2B01069A006548F6 /* MenuList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19352DBB2B01069A006548F6 /* MenuList.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1933A4942B0531FC00B4BEB5 /* Welcoming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcoming.swift; sourceTree = "<group>"; };
 		19352DB72B010044006548F6 /* FetchedObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedObjects.swift; sourceTree = "<group>"; };
 		19352DB92B0100A5006548F6 /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		19352DBB2B01069A006548F6 /* MenuList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuList.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				1954104E2AFD3CF600384143 /* Onboarding.swift */,
 				194BD8122AFBFDAA00A885FB /* littlelemonApp.swift */,
 				19352DBF2B0107CB006548F6 /* Menu.swift */,
+				1933A4942B0531FC00B4BEB5 /* Welcoming.swift */,
 				194BD8162AFBFDAB00A885FB /* Assets.xcassets */,
 				194BD8182AFBFDAB00A885FB /* Preview Content */,
 			);
@@ -161,6 +164,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1933A4952B0531FC00B4BEB5 /* Welcoming.swift in Sources */,
 				198823CF2AFFB6EC001C44FE /* UserProfile.swift in Sources */,
 				196869F72B011B27004EBBBF /* littlelemon.xcdatamodeld in Sources */,
 				1954104F2AFD3CF600384143 /* Onboarding.swift in Sources */,
