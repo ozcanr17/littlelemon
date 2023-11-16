@@ -9,8 +9,12 @@ import SwiftUI
 
 struct Welcoming: View {
     var body: some View {
-        NavigationView {
-            TabView {
+        TabView {
+            VStack {
+                Spacer(minLength: 100)
+                Image("Logo")
+                    .scaleEffect(1)
+                Spacer(minLength: 30)
                 RoundedRectangle(cornerRadius: 20)
                     .frame(width: 250, height: 400)
                     .foregroundColor(.yellow)
@@ -20,8 +24,14 @@ struct Welcoming: View {
                             .fontDesign(.monospaced)
                             .font(.title)
                             .fontWeight(.ultraLight)
-                            .foregroundColor(.black)
-                    )
+                            .foregroundColor(.black))
+                Spacer(minLength: 200)
+            }
+            VStack {
+                Spacer(minLength: 100)
+                Image("Logo")
+                        .scaleEffect(1)
+                Spacer(minLength: 30)
                 RoundedRectangle(cornerRadius: 20)
                     .frame(width: 250, height: 400)
                     .foregroundColor(.yellow)
@@ -31,12 +41,16 @@ struct Welcoming: View {
                             .fontDesign(.monospaced)
                             .font(.title)
                             .fontWeight(.ultraLight)
-                            .foregroundColor(.black)
-                    )
+                            .foregroundColor(.black))
+                Spacer(minLength: 200)
+            }
                 VStack {
-                    Spacer(minLength: 300)
+                    Spacer(minLength: 100)
+                    Image("Logo")
+                            .scaleEffect(1)
+                    Spacer(minLength: 30)
                     RoundedRectangle(cornerRadius: 20)
-                        .frame(width: 250, height: 350)
+                        .frame(width: 250, height: 400)
                         .foregroundColor(.yellow)
                         .overlay(
                             Text("Bruschetta Bliss in the Blink of an Eye! Savory Mediterranean Delights, with Lightning-Fast Delivery – Because Hunger Can't Wait!")
@@ -44,26 +58,12 @@ struct Welcoming: View {
                                 .fontDesign(.monospaced)
                                 .font(.title2)
                                 .fontWeight(.ultraLight)
-                                .foregroundColor(.black)
-                        )
-                    Spacer(minLength: 20)
-                    NavigationLink(
-                        destination: Onboarding().navigationBarBackButtonHidden()) {
-                            Text("Starving to Death")
-                                .fontDesign(.monospaced)
-                                .foregroundColor(.black)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 15)
-                                        .frame(width: 250, height: 50)
-                                        .foregroundColor(.orange)
-                                )
-                        }
-                    Spacer(minLength: 300)
+                                .foregroundColor(.black))
+                    Spacer(minLength: 200)
                 }
             }
             .tabViewStyle(.page)
             .background(Color.mint)
-        }
     }
 }
 

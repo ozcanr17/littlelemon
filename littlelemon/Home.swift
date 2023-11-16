@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct Home: View {
+    
     let persistenceController = PersistenceController.shared
     
     var body: some View {
@@ -30,4 +31,5 @@ struct Home: View {
 #Preview {
     Home()
 }
+
 
