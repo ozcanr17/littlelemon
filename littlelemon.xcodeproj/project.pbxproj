@@ -19,6 +19,7 @@
 		194BD81A2AFBFDAB00A885FB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 194BD8192AFBFDAB00A885FB /* Preview Assets.xcassets */; };
 		1954104F2AFD3CF600384143 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1954104E2AFD3CF600384143 /* Onboarding.swift */; };
 		196869F72B011B27004EBBBF /* littlelemon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 196869F52B011B27004EBBBF /* littlelemon.xcdatamodeld */; };
+		1973B3302B07CFD800CB6EFB /* littlelemon_wireframe.png in Resources */ = {isa = PBXBuildFile; fileRef = 1973B32F2B07CFD800CB6EFB /* littlelemon_wireframe.png */; };
 		198823CF2AFFB6EC001C44FE /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 198823CE2AFFB6EC001C44FE /* UserProfile.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		194BD8192AFBFDAB00A885FB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1954104E2AFD3CF600384143 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		196869F62B011B27004EBBBF /* littlelemon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = littlelemon.xcdatamodel; sourceTree = "<group>"; };
+		1973B32F2B07CFD800CB6EFB /* littlelemon_wireframe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = littlelemon_wireframe.png; sourceTree = "<group>"; };
 		198823CE2AFFB6EC001C44FE /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,6 +55,7 @@
 		194BD8062AFBFDAA00A885FB = {
 			isa = PBXGroup;
 			children = (
+				1973B32F2B07CFD800CB6EFB /* littlelemon_wireframe.png */,
 				194BD8112AFBFDAA00A885FB /* littlelemon */,
 				194BD8102AFBFDAA00A885FB /* Products */,
 			);
@@ -154,6 +157,7 @@
 			files = (
 				194BD81A2AFBFDAB00A885FB /* Preview Assets.xcassets in Resources */,
 				194BD8172AFBFDAB00A885FB /* Assets.xcassets in Resources */,
+				1973B3302B07CFD800CB6EFB /* littlelemon_wireframe.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
